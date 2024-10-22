@@ -1,0 +1,10 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Alura\\MVC\\": "src/"
+    }
+  },
+  "require": {
+    "ext-pdo": "*"
+  }
+}
