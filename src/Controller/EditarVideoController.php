@@ -3,6 +3,7 @@
 namespace Alura\MVC\Controller;
 
 use Alura\MVC\Entity\Video;
+use Alura\MVC\Helper\EnvioImagemHelper;
 use Alura\MVC\Repository\VideoRepository;
 
 class EditarVideoController implements Controller
@@ -35,6 +36,12 @@ class EditarVideoController implements Controller
             $titulo
         );
         $video->setId($id);
+
+        $imagem = EnvioImagemHelper::enviarImagem($_FILES['image']);
+
+        if ($imagem !== false) {
+            $video->setCaminhoImagem($imagem);
+        }
 
         if ($this->videoRepository->atualizar($video) === false) {
             header("Location: /?sucesso=0");

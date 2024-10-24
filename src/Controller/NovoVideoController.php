@@ -3,6 +3,7 @@
 namespace Alura\MVC\Controller;
 
 use Alura\MVC\Entity\Video;
+use Alura\MVC\Helper\EnvioImagemHelper;
 use Alura\MVC\Repository\VideoRepository;
 
 class NovoVideoController implements Controller
@@ -28,6 +29,13 @@ class NovoVideoController implements Controller
             $url,
             $titulo
         );
+
+        $imagem = EnvioImagemHelper::enviarImagem($_FILES['image']);
+
+        if ($imagem !== false) {
+                $video->setCaminhoImagem($imagem);
+        }
+
 
         if ($this->videoRepository->adicionar($video) === false) {
             header("Location: /?sucesso=0");

@@ -35,7 +35,7 @@ class Video
         $this->caminhoImagem = $caminhoImagem;
     }
 
-    public function getCaminhoImagem(): string
+    public function getCaminhoImagem(): ?string
     {
         return $this->caminhoImagem;
     }

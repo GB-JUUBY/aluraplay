@@ -2,7 +2,7 @@
 
 namespace Alura\MVC\Controller;
 
-use Alura\MVC\Controller\Controller;
+use Alura\MVC\Helper\EnvioImagemHelper;
 use Alura\MVC\Repository\VideoRepository;
 
 class RemoverVideoController implements Controller
@@ -19,7 +19,11 @@ class RemoverVideoController implements Controller
             exit();
         }
 
-        $video = $this->videoRepository->buscaVideo($id);
+        $video = $this->videoRepository->busca($id);
+
+        if (!is_null($video->getCaminhoImagem())) {
+            EnvioImagemHelper::apagarImagem($video->getCaminhoImagem());
+        }
 
         if ($this->videoRepository->remover($video) === false) {
             header("Location: /?sucesso=0");
