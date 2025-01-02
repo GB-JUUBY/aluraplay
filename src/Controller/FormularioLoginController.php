@@ -4,7 +4,7 @@ namespace Alura\MVC\Controller;
 
 use Alura\MVC\Controller\Controller;
 
-class FormularioLoginController implements Controller
+class FormularioLoginController extends TemplateController
 {
 
     public function processaRequisicao(): void
@@ -12,6 +12,6 @@ class FormularioLoginController implements Controller
         if (array_key_exists('logado', $_SESSION) && $_SESSION['logado'] === true) {
             header('location: /');
         }
-        require_once __DIR__ . '/../../views/formulario-login.php';
+        echo $this->RenderizaTemplate('formulario-login');
     }
 }

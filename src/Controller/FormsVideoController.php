@@ -4,9 +4,9 @@ namespace Alura\MVC\Controller;
 
 use Alura\MVC\Repository\VideoRepository;
 
-class FormsVideoController implements Controller
+class FormsVideoController extends TemplateController
 {
-    public function __construct(private VideoRepository $videoRepository)
+    public function __construct(private readonly VideoRepository $videoRepository)
     {
     }
 
@@ -17,8 +17,15 @@ class FormsVideoController implements Controller
         if ($id !== false && $id !== null) {
             $video = $this->videoRepository->busca($id);
             $action = "/editar-video?id=$video->id";
+
+            $context["video"] = $video;
         }
 
-        require_once __DIR__ . "/../../views/formulario.php";
+        $context["action"] = $action;
+
+        echo $this->RenderizaTemplate(
+            "formulario",
+            $context
+        );
     }
 }

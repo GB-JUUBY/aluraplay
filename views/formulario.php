@@ -31,6 +31,7 @@ require_once __DIR__ . '/cabecalho.php';
             <div class="formulario__campo">
                 <label class="campo__etiqueta" for="image">Capa do vídeo</label>
                 <input name="image"
+                       value="<?= $video?->getCaminhoImagem() ?? ''; ?>"
                        accept="image/*"
                        type="file"
                        class="campo__escrita"

@@ -3,11 +3,14 @@
 namespace Alura\MVC\Controller;
 
 use Alura\MVC\Helper\EnvioImagemHelper;
+use Alura\MVC\Helper\FlashMessageTrait;
 use Alura\MVC\Repository\VideoRepository;
 
 class RemoverVideoController implements Controller
 {
-    public function __construct(private VideoRepository $videoRepository)
+    use FlashMessageTrait;
+
+    public function __construct(private readonly VideoRepository $videoRepository)
     {
     }
 
@@ -15,7 +18,8 @@ class RemoverVideoController implements Controller
     {
         $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
         if ($id === false || $id === null){
-            header("Location: /?sucesso=0");
+            $this->adicionarMensagem("ID do vídeo inválido", true);
+            header("Location: /");
             exit();
         }
 
@@ -26,10 +30,12 @@ class RemoverVideoController implements Controller
         }
 
         if ($this->videoRepository->remover($video) === false) {
-            header("Location: /?sucesso=0");
+            $this->adicionarMensagem("Não foi possível excluir o vídeo", true);
+            header("Location: /");
             exit();
         }
 
-        header("Location: /?sucesso=1");
+        $this->adicionarMensagem("Vídeo removido com sucesso!");
+        header("Location: /");
     }
 }

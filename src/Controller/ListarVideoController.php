@@ -4,15 +4,20 @@ namespace Alura\MVC\Controller;
 
 use Alura\MVC\Repository\VideoRepository;
 
-class ListarVideoController implements Controller
+class ListarVideoController extends TemplateController
 {
-    public function __construct(private VideoRepository $videoRepository)
+    public function __construct(private readonly VideoRepository $videoRepository)
     {
     }
 
     public function processaRequisicao(): void
     {
         $listaVideos = $this->videoRepository->listar();
-        require_once __DIR__ . "/../../views/listar-videos.php";
+        echo $this->RenderizaTemplate(
+            'listar-videos',
+            [
+                'listaVideos' => $listaVideos
+            ]
+        );
     }
 }

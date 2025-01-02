@@ -5,7 +5,7 @@ namespace Alura\MVC\Controller;
 use Alura\MVC\Controller\Controller;
 use Alura\MVC\Repository\VideoRepository;
 
-class Erro404Controller implements Controller
+class Erro404Controller extends TemplateController
 {
     public function __construct()
     {
@@ -13,7 +13,7 @@ class Erro404Controller implements Controller
 
     public function processaRequisicao(): void
     {
-        require_once __DIR__ . "/../../views/erro-404.php";
+        echo $this->RenderizaTemplate('erro-404');
         http_response_code(404);
     }
 }

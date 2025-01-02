@@ -29,3 +29,14 @@
     </nav>
 
 </header>
+<?php if (isset($_SESSION["mensagem"])):
+   $classe = $_SESSION["erro"] ? "aviso__erro" : "aviso__sucesso";
+?>
+<div class="container">
+    <div class="<?= $classe ?>"><?= $_SESSION["mensagem"] ?></div>
+    <?php
+    unset($_SESSION["mensagem"]);
+    unset($_SESSION["erro"]);
+    ?>
+</div>
+<?php endif ?>

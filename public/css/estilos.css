@@ -6,6 +6,10 @@
     --azul-claro: #E5F1FF;
     --cinza-texto: #444444;
     --cinza-claro: #ECECEC;
+    --vermelho: #913139;
+    --vermelho-claro: #f8d7da;
+    --verde: #519131;
+    --verde-claro: #e3f8d7;
     box-sizing: border-box;
 }
 
@@ -23,6 +27,10 @@ body {
 }
 
 /* ESTILOS DO HEADER */
+
+body > header {
+    height: 80px;
+}
 
 .cabecalho {
     background-color: white;
@@ -124,13 +132,24 @@ body {
     font-size: 24px;
 }
 
-.error__aviso {
+.aviso__erro {
     margin-top: 2em;
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+    background-color: var(--vermelho-claro);
+    color: var(--vermelho);
+    border: 1px solid var(--vermelho);
     padding: 15px;
-    border-radius: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.aviso__sucesso {
+    margin-top: 2em;
+    background-color: var(--verde-claro);
+    color: var(--verde);
+    border: 1px solid var(--verde);
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
 }
 
 @media(min-width: 834px) {

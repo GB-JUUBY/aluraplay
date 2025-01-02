@@ -11,12 +11,10 @@ class Usuario
     public readonly string $senha;
 
     public function __construct(
-        string $email,
-        string $senha
+        string $email
     )
     {
         $this->setEmail($email);
-        $this->setSenha($senha);
     }
 
     private function setEmail($email): void
@@ -31,7 +29,7 @@ class Usuario
     /**
      * @param string $senha
      */
-    private function setSenha(string $senha): void
+    public function setSenha(string $senha): void
     {
         if (str_starts_with($senha, '$argon2id$')) {
             $this->senha = $senha;

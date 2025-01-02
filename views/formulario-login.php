@@ -8,9 +8,9 @@
             </div>
             <?php endif;?>
             <div class="formulario__campo">
-                <label class="campo__etiqueta" for="usuario">Usuário</label>
+                <label class="campo__etiqueta" for="usuario">E-mail</label>
                 <input name="email" class="campo__escrita" required
-                placeholder="Digite seu usuário" id='usuario' />
+                placeholder="Digite seu e-mail" id='usuario' />
             </div>
             <div class="formulario__campo">
                 <label class="campo__etiqueta" for="senha">Senha</label>

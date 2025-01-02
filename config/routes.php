@@ -25,6 +25,18 @@ return [
         "controller" => \Alura\MVC\Controller\RemoverVideoController::class,
         "repository" => \Alura\MVC\Repository\VideoRepository::class
     ],
+    "GET|/remover-capa" => [
+        "controller" => \Alura\MVC\Controller\RemoverCapaController::class,
+        "repository" => \Alura\MVC\Repository\VideoRepository::class
+    ],
+    "GET|/video-json" => [
+        "controller" => \Alura\MVC\Controller\ListarVideosJsonController::class,
+        "repository" => \Alura\MVC\Repository\VideoRepository::class
+    ],
+    "POST|/video-json" => [
+        "controller" => \Alura\MVC\Controller\NovoVideoJsonController::class,
+        "repository" => \Alura\MVC\Repository\VideoRepository::class
+    ],
     "GET|/login" => [
         "controller" => \Alura\MVC\Controller\FormularioLoginController::class,
         "repository" => \Alura\MVC\Repository\UsuarioRepository::class

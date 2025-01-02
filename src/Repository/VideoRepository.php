@@ -40,11 +40,8 @@ class VideoRepository
 
     public function atualizar(Video $video): bool
     {
-        $atualizaImagemSql = "";
-        if ($video->getCaminhoImagem() !== null) {
             $atualizaImagemSql = ", caminho_imagem = :caminho_imagem";
             $caminhoImagem = $video->getCaminhoImagem();
-        }
 
         $sql = "UPDATE videos SET url = :url, 
                                   titulo = :titulo

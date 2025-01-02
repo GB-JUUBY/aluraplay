@@ -17,12 +17,24 @@ class EnvioImagemHelper
         if ($arquivo['error'] === UPLOAD_ERR_OK) {
             $nomeImagem = $arquivo['name'];
 
-            $sucesso = move_uploaded_file($arquivo['tmp_name'], $diretorioUpload . $nomeImagem);
+            $nomeImagemTratado = basename($nomeImagem);
 
-            if ($sucesso) {
-                return $nomeImagem;
-            } else {
-                return false;
+            $slug = strtolower($nomeImagemTratado);
+            $slug = preg_replace('/[^a-z0-9\s\-.]/', '', $slug);
+            $slug = str_replace(' ', '-', $slug);
+            $slug = trim($slug, '-');
+
+            $nomeImagemSeguro = uniqid('upload_') . '_' . $slug;
+
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->file($arquivo['tmp_name']);
+
+            if (str_starts_with($mimeType, 'image/')) {
+                return move_uploaded_file(
+                    $arquivo['tmp_name'],
+                    $diretorioUpload . $nomeImagemSeguro
+                )
+                    ? $nomeImagemSeguro : false;
             }
         }
 

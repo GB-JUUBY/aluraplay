@@ -63,16 +63,16 @@ class UsuarioRepository
 
         return array_map(function ($dadosUsuario) {
             $usuario = new Usuario(
-                $dadosUsuario['email'],
-                $dadosUsuario['senha']
+                $dadosUsuario['email']
             );
             $usuario->setId($dadosUsuario['id']);
+            $usuario->setSenha($dadosUsuario['senha']);
 
             return $usuario;
         }, $dadosUsuarios);
     }
 
-    public function busca(string $email): Usuario
+    public function busca(?string $email): Usuario|null
     {
         $sql = "SELECT * FROM usuarios WHERE email = :email";
         $statement = $this->pdo->prepare($sql);
@@ -80,12 +80,16 @@ class UsuarioRepository
         $statement->execute();
         $dadosUsuario = $statement->fetch();
 
-        $usuario = new Usuario(
-            $dadosUsuario['email'],
-            $dadosUsuario['senha']
-        );
-        $usuario->setId($dadosUsuario['id']);
+        if ($dadosUsuario) {
+            $usuario = new Usuario(
+                $dadosUsuario['email']
+            );
+            $usuario->setId($dadosUsuario['id']);
+            $usuario->setSenha($dadosUsuario['senha']);
 
-        return $usuario;
+            return $usuario;
+        }
+
+        return null;
     }
 }

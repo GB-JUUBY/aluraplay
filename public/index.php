@@ -14,7 +14,21 @@ $pathInfo = $_SERVER['PATH_INFO'] ?? "/";
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 $eRotaLogin = $pathInfo === "/login";
+
+session_set_cookie_params([
+    'samesite' => 'lax',
+    'httponly' => true
+]);
+
 session_start();
+
+if (isset($_SESSION['logado'])) {
+    $logado = $_SESSION['logado'];
+    unset($_SESSION['logado']);
+    session_regenerate_id();
+    $_SESSION['logado'] = $logado;
+}
+
 if (!array_key_exists("logado", $_SESSION) && !$eRotaLogin) {
     header("location: /login");
     return;
