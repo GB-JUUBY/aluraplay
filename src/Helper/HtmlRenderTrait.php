@@ -4,7 +4,7 @@ namespace Alura\MVC\Helper;
 
 trait HtmlRenderTrait
 {
-    const CAMINHO_TEMPLATE = __DIR__ . "/../../views/";
+    const string CAMINHO_TEMPLATE = __DIR__ . "/../../views/";
 
     public function RenderizaTemplate(string $template, array $context = []): string
     {
