@@ -1,8 +1,8 @@
 <?php
 
-namespace Alura\MVC\Controller;
+namespace Alura\MVC\Helper;
 
-abstract class TemplateController implements Controller
+trait HtmlRenderTrait
 {
     const CAMINHO_TEMPLATE = __DIR__ . "/../../views/";
 

@@ -2,11 +2,12 @@
 
 namespace Alura\MVC\Controller;
 
-use Alura\MVC\Controller\Controller;
-use Alura\MVC\Repository\VideoRepository;
+use Alura\MVC\Helper\HtmlRenderTrait;
 
-class Erro404Controller extends TemplateController
+class Erro404Controller implements Controller
 {
+    use HtmlRenderTrait;
+
     public function __construct()
     {
     }

@@ -2,10 +2,11 @@
 
 namespace Alura\MVC\Controller;
 
-use Alura\MVC\Controller\Controller;
+use Alura\MVC\Helper\HtmlRenderTrait;
 
-class FormularioLoginController extends TemplateController
+class FormularioLoginController implements Controller
 {
+    use HtmlRenderTrait;
 
     public function processaRequisicao(): void
     {

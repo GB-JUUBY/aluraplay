@@ -2,10 +2,13 @@
 
 namespace Alura\MVC\Controller;
 
+use Alura\MVC\Helper\HtmlRenderTrait;
 use Alura\MVC\Repository\VideoRepository;
 
-class FormsVideoController extends TemplateController
+readonly class FormsVideoController implements Controller
 {
+    use HtmlRenderTrait;
+
     public function __construct(private readonly VideoRepository $videoRepository)
     {
     }
