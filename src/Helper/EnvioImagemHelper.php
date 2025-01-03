@@ -2,21 +2,21 @@
 
 namespace Alura\MVC\Helper;
 
-use Exception;
+use Psr\Http\Message\UploadedFileInterface;
 
 class EnvioImagemHelper
 {
     /**
      * Espera um array $_FILES
-     * @param array|null $arquivo
+     * @param UploadedFileInterface|null $arquivo
      * @return bool|string|null
      */
-    public static function enviarImagem(?array $arquivo): bool|string|null {
+    public static function enviarImagem(?UploadedFileInterface $arquivo): string|null {
         $diretorioUpload = __DIR__ . "/../../public/img/uploads/";
 
-        if ($arquivo['error'] === UPLOAD_ERR_OK) {
-            $nomeImagem = $arquivo['name'];
-
+        if ($arquivo->getError() === UPLOAD_ERR_OK) {
+            $nomeImagem = $arquivo->getClientFilename();
+            $nomeTemporario = $arquivo->getStream()->getMetadata('uri');
             $nomeImagemTratado = basename($nomeImagem);
 
             $slug = strtolower($nomeImagemTratado);
@@ -27,14 +27,12 @@ class EnvioImagemHelper
             $nomeImagemSeguro = uniqid('upload_') . '_' . $slug;
 
             $finfo = new \finfo(FILEINFO_MIME_TYPE);
-            $mimeType = $finfo->file($arquivo['tmp_name']);
+            $mimeType = $finfo->file($nomeTemporario);
 
             if (str_starts_with($mimeType, 'image/')) {
-                return move_uploaded_file(
-                    $arquivo['tmp_name'],
-                    $diretorioUpload . $nomeImagemSeguro
-                )
-                    ? $nomeImagemSeguro : false;
+                $arquivo->moveTo($diretorioUpload . $nomeImagemSeguro);
+
+                return $nomeImagemSeguro;
             }
         }
 

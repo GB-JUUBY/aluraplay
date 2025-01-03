@@ -2,17 +2,20 @@
 
 namespace Alura\MVC\Controller;
 
-use Alura\MVC\Controller\Controller;
 use Alura\MVC\Entity\Video;
 use Alura\MVC\Repository\VideoRepository;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class ListarVideosJsonController implements Controller
+class ListarVideosJsonController implements RequestHandlerInterface
 {
     public function __construct(private readonly VideoRepository $videoRepository)
     {
     }
 
-    public function processaRequisicao(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $dadosVideos = $this->videoRepository->listar();
 
@@ -23,7 +26,13 @@ class ListarVideosJsonController implements Controller
                 'caminho_imagem' => !is_null($video->getCaminhoImagem()) ? '/img/upload/' . $video->getCaminhoImagem() : $video->getCaminhoImagem()
             ];
         }, $dadosVideos);
-        header('Content-Type: application/json');
-        echo json_encode($listaVideos);
+
+        return new Response(
+            200,
+            [
+                'Content-Type' => 'application/json'
+            ],
+            json_encode($listaVideos)
+        );
     }
 }

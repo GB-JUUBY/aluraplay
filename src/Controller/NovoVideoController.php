@@ -6,8 +6,12 @@ use Alura\MVC\Entity\Video;
 use Alura\MVC\Helper\EnvioImagemHelper;
 use Alura\MVC\Helper\FlashMessageTrait;
 use Alura\MVC\Repository\VideoRepository;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class NovoVideoController implements Controller
+class NovoVideoController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
@@ -15,19 +19,30 @@ class NovoVideoController implements Controller
     {
     }
 
-    public function processaRequisicao(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $url = filter_input(INPUT_POST, 'url', FILTER_VALIDATE_URL);
+        $parametros = $request->getParsedBody();
+        
+        $url = filter_var($parametros['url'], FILTER_VALIDATE_URL);
         if ($url === false || $url === null) {
             $this->adicionarMensagem("URL do vídeo inválida", true);
-            header("Location: /novo-video");
-            exit();
+            return new Response(
+                302,
+                [
+                    'Location' => '/novo-video'
+                ]
+            );
         }
-        $titulo = filter_input(INPUT_POST, 'titulo');
+
+        $titulo = filter_var($parametros['titulo']);
         if ($titulo === false || $titulo === null) {
             $this->adicionarMensagem("Título do vídeo inválida", true);
-            header("Location: /novo-video");
-            exit();
+            return new Response(
+                302,
+                [
+                    'Location' => '/novo-video'
+                ]
+            );
         }
 
         $video = new Video(
@@ -35,24 +50,26 @@ class NovoVideoController implements Controller
             $titulo
         );
 
-        $imagem = EnvioImagemHelper::enviarImagem($_FILES['image']);
-
-        if ($imagem !== false) {
-                $video->setCaminhoImagem($imagem);
-        } else {
-            $this->adicionarMensagem("Não foi possível enviar a imagem de capa", true);
-            header("Location: /novo-video");
-            exit();
-        }
-
+        $files = $request->getUploadedFiles();
+        $imagem = EnvioImagemHelper::enviarImagem($files['image']);
+        $video->setCaminhoImagem($imagem);
 
         if ($this->videoRepository->adicionar($video) === false) {
             $this->adicionarMensagem("Não foi possível enviar o vídeo", true);
-            header("Location: /novo-video");
-            exit();
+            return new Response(
+                302,
+                [
+                    'Location' => '/novo-video'
+                ]
+            );
         }
 
         $this->adicionarMensagem("Vídeo enviado com sucesso!");
-        header("Location: /");
+        return new Response(
+            200,
+            [
+                'Location' => '/'
+            ]
+        );
     }
 }

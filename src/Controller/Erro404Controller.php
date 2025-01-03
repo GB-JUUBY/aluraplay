@@ -3,8 +3,12 @@
 namespace Alura\MVC\Controller;
 
 use Alura\MVC\Helper\HtmlRenderTrait;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class Erro404Controller implements Controller
+class Erro404Controller implements RequestHandlerInterface
 {
     use HtmlRenderTrait;
 
@@ -12,9 +16,8 @@ class Erro404Controller implements Controller
     {
     }
 
-    public function processaRequisicao(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        echo $this->RenderizaTemplate('erro-404');
-        http_response_code(404);
+        return new Response(404, body: $this->RenderizaTemplate('erro-404'));
     }
 }

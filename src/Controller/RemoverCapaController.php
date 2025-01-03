@@ -2,26 +2,35 @@
 
 namespace Alura\MVC\Controller;
 
-use Alura\MVC\Controller\Controller;
 use Alura\MVC\Helper\EnvioImagemHelper;
 use Alura\MVC\Helper\FlashMessageTrait;
 use Alura\MVC\Repository\VideoRepository;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class RemoverCapaController implements Controller
+class RemoverCapaController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
-    public function __construct(private VideoRepository $videoRepository)
+    public function __construct(private readonly VideoRepository $videoRepository)
     {
     }
 
-    public function processaRequisicao(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+        $parametros = $request->getQueryParams();
+
+        $id = filter_var($parametros["id"], FILTER_VALIDATE_INT);
         if ($id === false || $id === null){
             $this->adicionarMensagem("ID do vídeo inválido", true);
-            header("Location: /");
-            exit();
+            return new Response(
+                302,
+                [
+                    "Location" => "/"
+                ]
+            );
         }
 
         $video = $this->videoRepository->busca($id);
@@ -31,11 +40,20 @@ class RemoverCapaController implements Controller
         if ($this->videoRepository->atualizar($video)) {
             EnvioImagemHelper::apagarImagem($capa);
             $this->adicionarMensagem("Capa removida com sucesso!");
-            header("Location: /");
+            return new Response(
+                200,
+                [
+                    "Location" => "/"
+                ]
+            );
         } else {
             $this->adicionarMensagem("Não foi possível remover a capa", true);
-            header("Location: /");
-            exit();
+            return new Response(
+                302,
+                [
+                    "Location" => "/"
+                ]
+            );
         }
     }
 }

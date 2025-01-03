@@ -1,6 +1,7 @@
 <?php
 
 use Alura\MVC\Controller\Erro404Controller;
+use Psr\Http\Server\RequestHandlerInterface;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -50,4 +51,26 @@ if (array_key_exists($key, $routes)) {
     $controller = new Erro404Controller();
 }
 
-$controller->processaRequisicao();
+$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
+
+$creator = new \Nyholm\Psr7Server\ServerRequestCreator(
+    $psr17Factory, // ServerRequestFactory
+    $psr17Factory, // UriFactory
+    $psr17Factory, // UploadedFileFactory
+    $psr17Factory  // StreamFactory
+);
+
+$request = $creator->fromGlobals();
+
+/** @var RequestHandlerInterface $controller */
+$response = $controller->handle($request);
+
+http_response_code($response->getStatusCode());
+
+foreach ($response->getHeaders() as $name => $values) {
+    foreach ($values as $value) {
+        header(sprintf('%s: %s', $name, $value), false);
+    }
+}
+
+echo $response->getBody();

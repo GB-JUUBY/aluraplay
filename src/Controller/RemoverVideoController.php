@@ -5,8 +5,12 @@ namespace Alura\MVC\Controller;
 use Alura\MVC\Helper\EnvioImagemHelper;
 use Alura\MVC\Helper\FlashMessageTrait;
 use Alura\MVC\Repository\VideoRepository;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class RemoverVideoController implements Controller
+class RemoverVideoController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
@@ -14,13 +18,19 @@ class RemoverVideoController implements Controller
     {
     }
 
-    public function processaRequisicao(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+        $parametros = $request->getQueryParams();
+
+        $id = filter_var($parametros["id"], FILTER_VALIDATE_INT);
         if ($id === false || $id === null){
             $this->adicionarMensagem("ID do vídeo inválido", true);
-            header("Location: /");
-            exit();
+            return new Response(
+                302,
+                [
+                    "Location" => "/"
+                ]
+            );
         }
 
         $video = $this->videoRepository->busca($id);
@@ -31,11 +41,20 @@ class RemoverVideoController implements Controller
 
         if ($this->videoRepository->remover($video) === false) {
             $this->adicionarMensagem("Não foi possível excluir o vídeo", true);
-            header("Location: /");
-            exit();
+            return new Response(
+                302,
+                [
+                    "Location" => "/"
+                ]
+            );
         }
 
         $this->adicionarMensagem("Vídeo removido com sucesso!");
-        header("Location: /");
+        return new Response(
+            200,
+            [
+                "Location" => "/"
+            ]
+        );
     }
 }
