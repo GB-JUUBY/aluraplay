@@ -2,14 +2,14 @@
 
 use Alura\MVC\Entity\Video;
 
-require_once __DIR__ . '/cabecalho.php';
+$this->layout('layout');
 
 /** @var string $action */
 /** @var Video $video */
 ?>
     <main class="container">
 
-        <form class="container__formulario" action=<?= $action; ?> method="POST" enctype="multipart/form-data">
+        <form class="container__formulario" action="<?= $action; ?>" method="POST" enctype="multipart/form-data">
             <h2 class="formulario__titulo">Envie um vídeo!</h2>
             <div class="formulario__campo">
                 <label class="campo__etiqueta" for="url">Link embed</label>
@@ -42,4 +42,3 @@ require_once __DIR__ . '/cabecalho.php';
         </form>
 
     </main>
-<?php require_once __DIR__ . '/rodape.php'; ?>

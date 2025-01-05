@@ -2,18 +2,19 @@
 
 namespace Alura\MVC\Controller;
 
-use Alura\MVC\Helper\HtmlRenderTrait;
 use Alura\MVC\Repository\VideoRepository;
+use League\Plates\Engine;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class ListarVideoController implements RequestHandlerInterface
+readonly class ListarVideoController implements RequestHandlerInterface
 {
-    use HtmlRenderTrait;
-
-    public function __construct(private readonly VideoRepository $videoRepository)
+    public function __construct(
+        private VideoRepository $videoRepository,
+        private Engine          $templates
+    )
     {
     }
 
@@ -24,10 +25,7 @@ class ListarVideoController implements RequestHandlerInterface
 
         return new Response(
             200,
-            body: $this->RenderizaTemplate(
-                'listar-videos',
-                $context
-            )
+            body: $this->templates->render('listar-videos', $context)
         );
     }
 }

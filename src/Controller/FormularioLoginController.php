@@ -2,15 +2,17 @@
 
 namespace Alura\MVC\Controller;
 
-use Alura\MVC\Helper\HtmlRenderTrait;
+use League\Plates\Engine;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class FormularioLoginController implements RequestHandlerInterface
+readonly class FormularioLoginController implements RequestHandlerInterface
 {
-    use HtmlRenderTrait;
+    public function __construct(private Engine $templates)
+    {
+    }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -22,6 +24,6 @@ class FormularioLoginController implements RequestHandlerInterface
                 ]
             );
         }
-        return new Response(200, body: $this->RenderizaTemplate('formulario-login'));
+        return new Response(200, body: $this->templates->render('formulario-login'));
     }
 }

@@ -1,6 +1,4 @@
-<?php
-require_once __DIR__ . '/cabecalho.php';
-?>
+<?php $this->layout('layout') ?>
 <main class="container">
     <div class="container__error">
         <h2 class="error__titulo">Error 404</h2>
@@ -9,4 +7,3 @@ require_once __DIR__ . '/cabecalho.php';
         </p>
     </div>
 </main>
-<?php require_once __DIR__ . '/rodape.php'; ?>

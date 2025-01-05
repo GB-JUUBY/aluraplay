@@ -2,8 +2,8 @@
 
 namespace Alura\MVC\Controller;
 
-use Alura\MVC\Helper\HtmlRenderTrait;
 use Alura\MVC\Repository\VideoRepository;
+use League\Plates\Engine;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -11,16 +11,17 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 readonly class FormsVideoController implements RequestHandlerInterface
 {
-    use HtmlRenderTrait;
-
-    public function __construct(private readonly VideoRepository $videoRepository)
+    public function __construct(
+        private readonly VideoRepository $videoRepository,
+        private Engine $templates
+    )
     {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $parametros = $request->getQueryParams();
-        $id = filter_var($parametros["id"], FILTER_VALIDATE_INT);
+        $id = filter_var($parametros["id"] ?? '', FILTER_VALIDATE_INT);
         $action = "/novo-video";
         if ($id !== false && $id !== null) {
             $video = $this->videoRepository->busca($id);
@@ -33,10 +34,7 @@ readonly class FormsVideoController implements RequestHandlerInterface
 
         return new Response(
             200,
-            body: $this->RenderizaTemplate(
-                "formulario",
-                $context
-            )
+            body: $this->templates->render("formulario", $context)
         );
     }
 }

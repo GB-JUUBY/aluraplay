@@ -9,7 +9,7 @@ class EnvioImagemHelper
     /**
      * Espera um array $_FILES
      * @param UploadedFileInterface|null $arquivo
-     * @return bool|string|null
+     * @return string|null
      */
     public static function enviarImagem(?UploadedFileInterface $arquivo): string|null {
         $diretorioUpload = __DIR__ . "/../../public/img/uploads/";

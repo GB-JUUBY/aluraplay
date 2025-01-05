@@ -1,8 +1,9 @@
 <?php
 
-use Psr\Container\ContainerInterface;
+use DI\ContainerBuilder;
+use League\Plates\Engine;
 
-$builder = new \DI\ContainerBuilder();
+$builder = new ContainerBuilder();
 
 $builder->addDefinitions([
    PDO::class => function () {
@@ -13,6 +14,9 @@ $builder->addDefinitions([
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
     return $pdo;
+   },
+   Engine::class => function () {
+    return new Engine(__DIR__ . "/../views");
    }
 ]);
 
