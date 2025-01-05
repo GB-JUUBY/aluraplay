@@ -1,51 +1,16 @@
 <?php
 
 return [
-    "GET|/" => [
-        "controller" => \Alura\MVC\Controller\ListarVideoController::class,
-        "repository" => \Alura\MVC\Repository\VideoRepository::class
-    ],
-    "GET|/novo-video" => [
-        "controller" => \Alura\MVC\Controller\FormsVideoController::class,
-        "repository" => \Alura\MVC\Repository\VideoRepository::class
-    ],
-    "POST|/novo-video" => [
-        "controller" => \Alura\MVC\Controller\NovoVideoController::class,
-        "repository" => \Alura\MVC\Repository\VideoRepository::class
-    ],
-    "GET|/editar-video" => [
-        "controller" => \Alura\MVC\Controller\FormsVideoController::class,
-        "repository" => \Alura\MVC\Repository\VideoRepository::class
-    ],
-    "POST|/editar-video" => [
-        "controller" => \Alura\MVC\Controller\EditarVideoController::class,
-        "repository" => \Alura\MVC\Repository\VideoRepository::class
-    ],
-    "GET|/remover-video" => [
-        "controller" => \Alura\MVC\Controller\RemoverVideoController::class,
-        "repository" => \Alura\MVC\Repository\VideoRepository::class
-    ],
-    "GET|/remover-capa" => [
-        "controller" => \Alura\MVC\Controller\RemoverCapaController::class,
-        "repository" => \Alura\MVC\Repository\VideoRepository::class
-    ],
-    "GET|/video-json" => [
-        "controller" => \Alura\MVC\Controller\ListarVideosJsonController::class,
-        "repository" => \Alura\MVC\Repository\VideoRepository::class
-    ],
-    "POST|/video-json" => [
-        "controller" => \Alura\MVC\Controller\NovoVideoJsonController::class,
-        "repository" => \Alura\MVC\Repository\VideoRepository::class
-    ],
-    "GET|/login" => [
-        "controller" => \Alura\MVC\Controller\FormularioLoginController::class,
-        "repository" => \Alura\MVC\Repository\UsuarioRepository::class
-    ],
-    "POST|/login" => [
-        "controller" => \Alura\MVC\Controller\LoginController::class,
-        "repository" => \Alura\MVC\Repository\UsuarioRepository::class
-    ],
-    "GET|/logout" => [
-        "controller" => \Alura\MVC\Controller\LogoutController::class
-    ]
+    "GET|/" => Alura\MVC\Controller\ListarVideoController::class,
+    "GET|/novo-video" => Alura\MVC\Controller\FormsVideoController::class,
+    "POST|/novo-video" => Alura\MVC\Controller\NovoVideoController::class,
+    "GET|/editar-video" => Alura\MVC\Controller\FormsVideoController::class,
+    "POST|/editar-video" => Alura\MVC\Controller\EditarVideoController::class,
+    "GET|/remover-video" => Alura\MVC\Controller\RemoverVideoController::class,
+    "GET|/remover-capa" => Alura\MVC\Controller\RemoverCapaController::class,
+    "GET|/video-json" => Alura\MVC\Controller\ListarVideosJsonController::class,
+    "POST|/video-json" => Alura\MVC\Controller\NovoVideoJsonController::class,
+    "GET|/login" => Alura\MVC\Controller\FormularioLoginController::class,
+    "POST|/login" => Alura\MVC\Controller\LoginController::class,
+    "GET|/logout" => Alura\MVC\Controller\LogoutController::class
 ];

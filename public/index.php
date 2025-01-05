@@ -5,12 +5,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$caminhoDB = __DIR__ . "/../aluraplay.sqlite";
-
-$pdo = new PDO("sqlite:$caminhoDB");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
 $pathInfo = $_SERVER['PATH_INFO'] ?? "/";
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
@@ -37,16 +31,12 @@ if (!array_key_exists("logado", $_SESSION) && !$eRotaLogin) {
 
 $key = "$requestMethod|$pathInfo";
 $routes = require_once __DIR__ . "/../config/routes.php";
+$container = require_once __DIR__ . "/../config/dependencies.php";
 
 if (array_key_exists($key, $routes)) {
-    $controllerClass = $routes[$key]["controller"];
+    $controllerClass = $routes[$key];
 
-    if (array_key_exists('repository', $routes[$key])) {
-        $repositoryClass = $routes[$key]["repository"];
-        $repository = new $repositoryClass($pdo);
-    }
-
-    $controller = new $controllerClass($repository ?? null);
+    $controller = $container->get($controllerClass);
 } else {
     $controller = new Erro404Controller();
 }
